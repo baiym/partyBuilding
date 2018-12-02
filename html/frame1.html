@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>看新闻</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+    <link rel="stylesheet" href="../css/swiper.min.css">
+    <link rel="stylesheet" type="text/css" href="../css/reset.css" />
+    <script src="../script/jquery-1.10.1.min.js"></script>
+    <script src="../script/swiper.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            width: 100%;
+            overflow: hidden;
+        }
+
+        #topNav {
+            width: 100%;
+            overflow: hidden;
+            font-size: .28rem;
+            border-bottom: 1px solid #f8f8f8;
+            background-color: #c30302;
+            /*position: fixed;
+            top: .5rem;*/
+        }
+
+        #topNav .swiper-slide {
+            padding: 0 .3rem;
+            letter-spacing: 2px;
+            width: .8rem;
+            height: .8rem;
+            line-height: .8rem;
+            text-align: center;
+            color: #FFF;
+            font-size: .28rem;
+            background-color: #c30302;
+        }
+
+        #topNav .swiper-slide span {
+            transition: all .3s ease;
+            display: block;
+        }
+
+        #topNav .active span {
+            position: relative;
+            transform: scale(1.1);
+            color: #FFF;
+            font-size: .3rem;
+        }
+
+        #topNav .active span::before {
+            content: ' ';
+            position: absolute;
+            height: .1rem;
+            width: .8rem;
+            left: 0rem;
+            bottom: 0;
+            background-color: #FFF;
+        }
+
+        img {
+            width: 100%;
+            line-height: 0;
+        }
+    </style>
+    <style type="text/css">
+        .list {
+            background-color: #ffffff;
+        }
+
+        .list-item {
+            display: flex;
+            display: -webkit-flex;
+            padding: .55rem .6rem;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .list-info {
+            flex: 1;
+        }
+
+        .list-con-title {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 2;
+            font-size: .3rem;
+            font-weight: 700;
+            color: #191919;
+            line-height: 1.5;
+            min-height: .9rem;
+            margin-bottom: .3rem;
+        }
+
+        .have-read {
+            color: #898989;
+        }
+
+        .list-con-time {
+            line-height: 1;
+            font-size: .26rem;
+            color: #616161;
+        }
+
+        .list-item-img {
+            margin-left: .2rem;
+            width: 1.95rem;
+            height: 1.45rem;
+            background-position: center;
+            background-size: cover;
+            background-repeat: no-repeat;
+        }
+    </style>
+</head>
+
+<body>
+    <!--<img src="images/img01.png">-->
+    <div id="topNav" class="swiper-container">
+        <div class="swiper-wrapper">
+            <div class="swiper-slide active"><span>新闻</span></div>
+            <div class="swiper-slide"><span>党建</span></div>
+            <div class="swiper-slide"><span>公告</span></div>
+        </div>
+    </div>
+
+    <!-- Swiper -->
+    <div class="swiper-container2">
+        <div class="swiper-wrapper">
+            <div class="swiper-slide">
+                <div class="list" id="xinwen">
+                    <div class="list-item">
+                        <div class="list-info">
+                            <div class="list-con-title">人民日报评论员：新时代“三农工作抓手”</div>
+                            <div class="list-con-time">
+                                <span class="time">2小时前</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="swiper-slide">
+                <div class="list" id="dangjian">
+                    <div class="list-item">
+                        <div class="list-info">
+                            <div class="list-con-title">人民日报评论员：新时代“三农工作抓手”</div>
+                            <div class="list-con-time">
+                                <span class="time">2小时前</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="swiper-slide">
+                <div class="list" id="gonggao">
+                    <div class="list-item">
+                        <div class="list-info">
+                            <div class="list-con-title">人民日报评论员：新时代“三农工作抓手”</div>
+                            <div class="list-con-time">
+                                <span class="time">2小时前</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="../script/jquery-1.10.1.min.js" charset="utf-8"></script>
+    <script src="../script/public.js" charset="utf-8"></script>
+    <script src="../script/api.js" charset="utf-8"></script>
+    <script type="text/javascript">
+        apiready = function() {
+            get_new_list_by_type(0);
+            get_new_list_by_type(1);
+            get_new_list_by_type(3);
+
+            function get_new_list_by_type(type) {
+                var url = HOST + 'News/get_new_list_by_type/';
+                api.ajax({
+                    url: url,
+                    method: 'post',
+                    data: {
+                        values: {
+                            type: type
+                        }
+                    }
+                }, function(ret) {
+                    var html = '';
+                    for (var i = 0; i < ret.list.length; i++) {
+                        html += '<div class="list-item" data-id=' + ret.list[i].id + ' onclick="jumpToDetail(this)">';
+                        html += '<div class="list-info">';
+                        html += '<div class="list-con-title">' + ret.list[i].title + '</div>';
+                        html += '<div class="list-con-time">';
+                        html += '<span class="time">' + ret.list[i].ctime + '</span>';
+                        html += '</div>';
+                        html += '</div>';
+                        html += '</div>';
+                    }
+                    switch (type) {
+                        case 0:
+                            $('#xinwen').html(html);
+                            break;
+                        case 1:
+                            $('#dangjian').html(html);
+                            break;
+                        case 3:
+                            $('#gonggao').html(html);
+                            break;
+                    }
+                });
+            };
+        }
+
+        function jumpToDetail(e) {
+            // console.log($(e).data('id'));
+            var new_id = $(e).data('id');
+            api.openWin({
+                name: 'win_details',
+                url: './details/win_details.html',
+                pageParam: {
+                    new_id: new_id
+                }
+            });
+        }
+    </script>
+    <script>
+        var pageSwiper = new Swiper('.swiper-container2', {
+            paginationClickable: true,
+            uniqueNavElements: false,
+            onSlideChangeStart: function(swiper) {
+                //            console.log(swiper.activeIndex)
+                //            mySwiper.slideTo(swiper.activeIndex, 1000, false);
+                $("#topNav  .active").removeClass('active')
+                $("#topNav .swiper-slide").eq(swiper.activeIndex).addClass('active')
+
+                slide = mySwiper.slides[swiper.activeIndex]; //获取当前的slide节点
+                slideLeft = slide.offsetLeft
+                slideWidth = slide.clientWidth
+                slideCenter = slideLeft + slideWidth / 2
+                    // 被点击slide的中心点
+                console.log("============")
+                console.log("slideLeft:" + slideLeft)
+                console.log("maxWidth:" + maxWidth)
+                console.log("slideCenter:" + slideCenter)
+                console.log("swiperWidth / 2:" + swiperWidth / 2)
+                mySwiper.setWrapperTransition(300)
+                if (slideCenter < swiperWidth / 2) {
+                    mySwiper.setWrapperTranslate(0)
+                } else if (slideCenter > maxWidth) {
+                    mySwiper.setWrapperTranslate(maxTranslate)
+                    console.log("maxTranslate:" + maxTranslate)
+                } else {
+                    nowTlanslate = slideCenter - swiperWidth / 2
+                    console.log(nowTlanslate)
+                    mySwiper.setWrapperTranslate(-nowTlanslate)
+                }
+            }
+        });
+    </script>
+
+    <!--<img src="images/img02.png">-->
+    <script type="text/javascript">
+        var mySwiper = new Swiper('#topNav', {
+            freeMode: true,
+            freeModeMomentumRatio: 0.5,
+            slidesPerView: 'auto',
+
+        });
+
+        swiperWidth = mySwiper.container[0].clientWidth
+        maxTranslate = mySwiper.maxTranslate();
+        maxWidth = -maxTranslate + swiperWidth / 2
+
+        $(".swiper-container").on('touchstart', function(e) {
+            e.preventDefault()
+        })
+
+        mySwiper.on('tap', function(swiper, e) {
+            //    console.log(swiper.clickedIndex)
+            pageSwiper.slideTo(swiper.clickedIndex, 1000, false); //跳转
+            //	e.preventDefault()
+            slide = swiper.slides[swiper.clickedIndex]
+            slideLeft = slide.offsetLeft
+            slideWidth = slide.clientWidth
+            slideCenter = slideLeft + slideWidth / 2
+            console.log("slideLeft:" + slideLeft)
+            console.log("maxWidth:" + maxWidth)
+            console.log("slideCenter:" + slideCenter)
+                // 被点击slide的中心点
+            mySwiper.setWrapperTransition(300)
+            if (slideCenter < swiperWidth / 2) {
+                mySwiper.setWrapperTranslate(0)
+            } else if (slideCenter > maxWidth) {
+                mySwiper.setWrapperTranslate(maxTranslate)
+            } else {
+                nowTlanslate = slideCenter - swiperWidth / 2
+                mySwiper.setWrapperTranslate(-nowTlanslate)
+            }
+            $("#topNav  .active").removeClass('active')
+
+            $("#topNav .swiper-slide").eq(swiper.clickedIndex).addClass('active')
+
+        })
+    </script>
+
+</body>
+
+</html>

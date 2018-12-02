@@ -1,0 +1,181 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>底部导航</title>
+    <link rel="stylesheet" type="text/css" href="./css/api.css" />
+    <link rel="stylesheet" type="text/css" href="./css/style.css" />
+    <style>
+        header {
+            background-color: #c30302;
+        }
+
+        header ul li {
+            height: 50px;
+            line-height: 50px;
+            display: flex;
+            display: -webkit-flex;
+            align-items: center;
+            padding: 0px 15px;
+            display: none;
+            color: #FFF;
+            position: relative;
+            font-size: 18px;
+            font-weight: 700;
+        }
+        header ul li img{
+          height: 20px;
+          margin-right: 10px;
+        }
+
+        header ul li.active {
+          display: flex;
+          display: -webkit-flex;
+        }
+
+        #footer {
+            background-color: #ffffff;
+            box-shadow: 0px -2px 20px rgba(238, 238, 238, 1);
+        }
+
+        #footer ul li {
+            padding-top: 36px;
+            padding-bottom: 4px;
+            background: url() no-repeat center 2px;
+            background-size: auto 30px;
+            text-align: center;
+        }
+
+        #footer ul li.active {
+            color: #c40202;
+        }
+
+        #footer ul li:nth-child(1) {
+            background-image: url(./image/ic_bottom_home_normal.png);
+        }
+
+        #footer ul li:nth-child(2) {
+            background-image: url(./image/ic_bottom_paper_normal.png);
+        }
+
+        #footer ul li:nth-child(3) {
+            background-image: url(./image/ic_bottom_gov_normal.png);
+        }
+
+        #footer ul li:nth-child(4) {
+            background-image: url(./image/ic_bottom_user_normal.png);
+        }
+
+        #footer ul li:nth-child(1).active {
+            background-image: url(./image/ic_bottom_home_select.png);
+        }
+
+        #footer ul li:nth-child(2).active {
+            background-image: url(./image/ic_bottom_paper_select.png);
+        }
+
+        #footer ul li:nth-child(3).active {
+            background-image: url(./image/ic_bottom_gov_select.png);
+        }
+
+        #footer ul li:nth-child(4).active {
+            background-image: url(./image/ic_bottom_user_select.png);
+        }
+
+        .flex-con {
+            overflow: auto
+        }
+    </style>
+</head>
+
+<body>
+    <div id="wrap" class="flex-wrap flex-vertical">
+        <header>
+            <ul>
+                <li class="border-b active"><img src="./image/ic_top_main_logo.png"/><p>智慧党建</p></li>
+                <li class="border-b">看新闻</li>
+                <li class="border-b">上党课</li>
+                <li class="border-b"></li>
+            </ul>
+        </header>
+        <div id="main" class="flex-con">
+
+        </div>
+        <div id="footer">
+            <ul class="flex-wrap">
+                <li tapmode="hover" onclick="randomSwitchBtn( this );" class="flex-con active">首页</li>
+                <li tapmode="hover" onclick="randomSwitchBtn( this );" class="flex-con">看新闻</li>
+                <li tapmode="hover" onclick="randomSwitchBtn( this );" class="flex-con">上党课</li>
+                <li tapmode="hover" onclick="randomSwitchBtn( this );" class="flex-con">个人中心</li>
+            </ul>
+        </div>
+    </div>
+</body>
+
+</html>
+<script type="text/javascript" src="script/api.js"></script>
+<script type="text/javascript">
+    apiready = function() {
+        // $api.rmStorage('userInfo');
+        $api.fixStatusBar($api.dom('header'));
+        api.setStatusBarStyle({
+            style: 'light',
+            color: '#c30302'
+        });
+        funIniGroup();
+        var userInfo = $api.getStorage('userInfo');
+        console.log(JSON.stringify(userInfo));
+    }
+
+    function funIniGroup() {
+        var eHeaderLis = $api.domAll('header li'),
+            frames = [];
+        for (var i = 0, len = eHeaderLis.length; i < len; i++) {
+            frames.push({
+                name: 'frame' + i,
+                url: './html/frame' + i + '.html',
+                bgColor: 'rgba(0,0,0,.2)',
+                // bounces:false
+            })
+        }
+        api.openFrameGroup({
+            name: 'group',
+            scrollEnabled: false,
+            rect: {
+                x: 0,
+                y: $api.dom('header').offsetHeight,
+                w: api.winWidth,
+                h: $api.dom('#main').offsetHeight
+            },
+            index: 0,
+            frames: frames
+        }, function(ret, err) {
+
+        });
+    }
+
+    // 随意切换按钮
+    function randomSwitchBtn(tag) {
+        if (tag == $api.dom('#footer li.active')) return;
+        var eFootLis = $api.domAll('#footer li'),
+            eHeaderLis = $api.domAll('header li'),
+            index = 0;
+        for (var i = 0, len = eFootLis.length; i < len; i++) {
+            if (tag == eFootLis[i]) {
+                index = i;
+            } else {
+                $api.removeCls(eFootLis[i], 'active');
+                $api.removeCls(eHeaderLis[i], 'active');
+            }
+        }
+        $api.addCls(eFootLis[index], 'active');
+        $api.addCls(eHeaderLis[index], 'active');
+        api.setFrameGroupIndex({
+            name: 'group',
+            index: index
+        });
+    }
+</script>

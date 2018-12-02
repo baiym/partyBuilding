@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>用户登录</title>
+    <link rel="stylesheet" type="text/css" href="../../css/reset.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/border.css" />
+    <style>
+        body {
+            background-color: #f5f5f5;
+        }
+
+        header {
+            position: relative;
+            width: 100%;
+            height: 4.2rem;
+            background-color: #52c9c5;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+
+        .header-bg {
+            position: absolute;
+            z-index: 1;
+            background-color: #c30302;
+            height: 100%;
+            width: 100%;
+            opacity: .95;
+        }
+
+        .header-user-warrper {
+            position: absolute;
+            bottom: .3rem;
+            z-index: 2;
+            padding: .3rem;
+            /*display: flex;
+            display: -webkit-flex;
+            align-items: center;*/
+        }
+
+        .header-avaImg {
+            height: 1.2rem;
+            width: 1.2rem;
+            border-radius: 2%;
+            border: 2px solid #FFF;
+            overflow: hidden;
+            margin: .2rem 0rem;
+        }
+
+        .header-name {
+            top: .28rem;
+            font-size: .48rem;
+            font-weight: bold;
+            color: #FFF;
+        }
+
+        .nav-list {
+            padding: 0rem .4rem;
+            background-color: #FFF;
+            margin-top: .2rem;
+        }
+
+        .nav-item {
+            min-height: 1.3rem;
+            display: -webkit-box;
+            display: -webkit-flex;
+            -webkit-box-align: center;
+            -webkit-align-items: center;
+            justify-content: space-between;
+            font-size: .30rem;
+        }
+
+        .nav-icon {
+            position: relative;
+            margin-right: .21rem;
+            line-height: 20px;
+        }
+
+        .nav-icon img {
+            vertical-align: middle;
+            width: .45rem;
+            height: .45rem;
+            display: block;
+            border-radius: 2px;
+        }
+
+        .other {
+            color: #a8a9a8;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <div class="nav-list">
+            <div class="nav-item border-bottom" @click="getPic">
+                <div>头像</div>
+                <div class="user">
+                    <img class="header-avaImg" :src="coverImgUrl" />
+                </div>
+            </div>
+            <div class="nav-item border-bottom" @click="change_username">
+                <div>昵称</div>
+                <div class="other">{{username}}</div>
+            </div>
+            <div class="nav-item" @click="change_password">
+                <div>修改密码</div>
+            </div>
+        </div>
+        <div class="nav-list" @click="logout">
+            <div class="nav-item">
+                <div>退出</div>
+            </div>
+        </div>
+    </div>
+    <script src="../../script/api.js" charset="utf-8"></script>
+    <script src="../../script/public.js" charset="utf-8"></script>
+    <script src="../../script/jquery-1.10.1.min.js" charset="utf-8"></script>
+    <script src="../../script/vue.js"></script>
+    <script type="text/javascript">
+        apiready = function() {
+            var vm = new Vue({
+                el: '#app',
+                data: {
+                    coverImgUrl: 'https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=1860228693,2930990208&fm=27&gp=0.jpg',
+                    islogin: false,
+                    username: ''
+                },
+                methods: {
+                    logout: function() {
+                        api.confirm({
+                            title: '提示',
+                            msg: '确认退出吗?',
+                            buttons: ['确定', '取消']
+                        }, function(ret, err) {
+                            if (ret) {
+                                if (ret.buttonIndex == 1) {
+                                    $api.clearStorage(); //清空缓存
+                                    api.sendEvent({
+                                        name: 'login'
+                                    });
+                                    api.openWin({
+                                        name: 'win_login',
+                                        url: '../login/win_login.html'
+                                    });
+                                }
+                            } else {
+                                alert(JSON.stringify(err));
+                            }
+                        });
+                    },
+                    login: function() {
+                        api.openWin({
+                            name: 'win_login',
+                            url: './login/win_login.html'
+                        });
+                    },
+                    getUserInfo: function() {
+                        var userInfo = $api.getStorage('userInfo');
+                        if (userInfo) {
+                            this.username = userInfo.nickname;
+                            this.coverImgUrl = userInfo.img;
+                            this.islogin = true;
+                        }
+                    },
+                    getPic: function() {
+                        var _this = this;
+                        api.getPicture({
+                            sourceType: 'album',
+                            mediaValue: 'pic',
+                            destinationType: 'url',
+                            allowEdit: true,
+                            targetWidth: 600,
+                            targetHeight: 600,
+                            saveToPhotoAlbum: false
+                        }, function(ret, err) {
+                            if (ret) {
+                                if (ret.data) {
+                                    _this.upload_header_img(ret.data);
+                                }
+                            } else {
+                                alert(JSON.stringify(err));
+                            }
+                        });
+                    },
+                    upload_header_img: function(file) {
+                        var url = HOST + 'PartyBuilding/upload_header_img/';
+                        var userInfo = $api.getStorage('userInfo');
+                        var uid = userInfo.id;
+                        api.showProgress({
+                            modal: true
+                        });
+                        api.ajax({
+                            url: url,
+                            method: 'post',
+                            data: {
+                                values: {
+                                    uid: uid
+                                },
+                                files: {
+                                    header_img: file
+                                }
+                            }
+                        }, function(ret, err) {
+                            api.hideProgress();
+                            if (ret) {
+                                api.toast({
+                                    msg: ret.msg,
+                                    duration: 2000,
+                                    location: 'bottom'
+                                });
+                                if (ret.result) {
+                                    _this.coverImgUrl = ret.img_url;
+                                    var userInfo = $api.getStorage('userInfo');
+                                    userInfo.img = ret.img_url;
+                                    $api.setStorage('userInfo', userInfo);
+                                    api.sendEvent({
+                                        name: 'login'
+                                    });
+                                }
+                            } else {
+                                alert(JSON.stringify(err));
+                            }
+                        });
+
+                    },
+                    change_username: function() {
+                        var url = HOST + 'PartyBuilding/change_username/';
+                        var userInfo = $api.getStorage('userInfo');
+                        var uid = userInfo.id;
+                        api.prompt({
+                            title: ' 请输入昵称',
+                            buttons: ['确定', '取消']
+                        }, function(ret, err) {
+                            var index = ret.buttonIndex;
+                            var text = ret.text;
+                            if (index == 1) {
+                                api.ajax({
+                                    url: url,
+                                    method: 'post',
+                                    data: {
+                                        values: {
+                                            username: text,
+                                            uid: uid
+                                        }
+                                    }
+                                }, function(ret, err) {
+                                    if (ret) {
+                                        alert(ret.msg);
+                                        if (ret.result) {
+                                            var userInfo = $api.getStorage('userInfo');
+                                            userInfo.nickname = text;
+                                            $api.setStorage('userInfo', userInfo);
+                                            api.sendEvent({
+                                                name: 'login'
+                                            });
+                                        }
+                                    } else {
+                                        alert(JSON.stringify(err));
+                                    }
+                                });
+                            }
+                        });
+                    },
+                    change_password: function() {
+                        var url = HOST + 'PartyBuilding/change_password/';
+                        var userInfo = $api.getStorage('userInfo');
+                        var uid = userInfo.id;
+                        api.prompt({
+                            title: ' 请输入旧的密码',
+                            buttons: ['确定', '取消']
+                        }, function(ret, err) {
+                            var index = ret.buttonIndex;
+                            var oldPassword = ret.text;
+                            if (index == 1) {
+                                api.ajax({
+                                    url: url,
+                                    method: 'post',
+                                    data: {
+                                        values: {
+                                            oldPassword: oldPassword,
+                                            uid: uid
+                                        }
+                                    }
+                                }, function(ret, err) {
+                                    if (ret) {
+                                        if (ret.result) {
+                                            api.prompt({
+                                                title: ' 请输入新的密码',
+                                                buttons: ['确定', '取消']
+                                            }, function(ret, err) {
+                                                var index = ret.buttonIndex;
+                                                var newPassword = ret.text;
+                                                if (index == 1) {
+                                                    api.ajax({
+                                                        url: url,
+                                                        method: 'post',
+                                                        data: {
+                                                            values: {
+                                                                oldPassword: oldPassword,
+                                                                newPassword: newPassword,
+                                                                uid: uid
+                                                            }
+                                                        }
+                                                    }, function(ret, err) {
+                                                        alert(ret.msg);
+                                                    });
+                                                } else {
+                                                    alert(JSON.stringify(err));
+                                                }
+                                            });
+                                        } else {
+                                            alert(ret.msg);
+                                        }
+                                    } else {
+                                        alert(JSON.stringify(err));
+                                    }
+                                });
+
+                            }
+                        });
+                    }
+                },
+                created: function() {
+                    var _this = this;
+                    this.getUserInfo();
+                    // 监听登陆广播
+                    api.addEventListener({
+                        name: 'login'
+                    }, function(ret, err) {
+                        _this.getUserInfo();
+                    });
+                }
+            })
+        }
+    </script>
+</body>
+
+</html>

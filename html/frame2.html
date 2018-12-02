@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>开发</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../css/reset.css" />
+    <style type="text/css">
+        .list {
+            background-color: #ffffff;
+        }
+
+        .list-item {
+            display: flex;
+            display: -webkit-flex;
+            padding: .55rem .6rem;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .list-info {
+            flex: 1;
+        }
+
+        .list-con-title {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 2;
+            font-size: .3rem;
+            font-weight: 700;
+            color: #191919;
+            line-height: 1.5;
+            min-height: .9rem;
+            margin-bottom: .3rem;
+        }
+
+        .have-read {
+            color: #898989;
+        }
+
+        .list-con-time {
+            line-height: 1;
+            font-size: .26rem;
+            color: #616161;
+        }
+
+        .list-item-img {
+            position: relative;
+            margin-left: .2rem;
+            width: 1.95rem;
+            height: 1.45rem;
+            background-position: center;
+            background-size: cover;
+            background-repeat: no-repeat;
+        }
+
+        .list-item-img:before {
+            content: ' ';
+            position: absolute;
+            height: .32rem;
+            width: .32rem;
+            bottom: .08rem;
+            right: .08rem;
+            background-image: url(../image/news_ic_traffic_video.png);
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: cover;
+        }
+        [v-cloak] {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app"  v-cloak>
+        <div class="list">
+            <div class="list-item" v-for="item of dangkeList">
+                <div class="list-info" @click="jumpToDetail(item.id)">
+                    <div class="list-con-title">{{item.title}}</div>
+                    <div class="list-con-time">
+                        <span class="time">{{item.ctime}}</span>
+                    </div>
+                </div>
+                <div class="list-item-img" v-bind:style="{ 'background-image': 'url(' + item.pic + ')'}"></div>
+            </div>
+        </div>
+    </div>
+</body>
+<script src="../script/api.js"></script>
+<script src="../script/vue.js"></script>
+<script src="../script/public.js" charset="utf-8"></script>
+<script type="text/javascript">
+    apiready = function(){
+      var vm = new Vue({
+          el: '#app',
+          data: {
+              dangkeList: []
+          },
+          methods:{
+            jumpToDetail:function(id){
+              api.openWin({
+                  name: 'win_details',
+                  url: './details/win_details.html',
+                  pageParam: {
+                      new_id: id
+                  }
+              });
+            },
+            getList:function(){
+              var _this = this;
+              var url = HOST + 'News/get_new_list_by_type/';
+              api.ajax({
+                  url: url,
+                  method: 'post',
+                  data: {
+                    values: {
+                      type: 2
+                    }
+                  }
+              },function(ret, err){
+                  if (ret) {
+                      if(ret.result){
+                        _this.dangkeList = ret.list;
+                      }
+                  }
+              });
+            }
+          },
+          created:function(){
+            this.getList();
+          }
+      })
+    }
+</script>
+
+</html>

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<title>个人信息</title>
+	<meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0, maximum-scale=1.0">
+	<link rel="stylesheet" type="text/css" href="../../css/reset.css" />
+</head>
+<style type="text/css">
+	body {
+		background-color: #FFF;
+	}
+
+	header {
+		display: flex;
+		display: -webket-flex;
+		align-items: center;
+		justify-content: center;
+		padding: 1.2rem 0rem;
+	}
+
+	header img {
+		height: 1.68rem;
+	}
+
+	.dj-from {
+		padding: 0rem .4rem;
+	}
+
+	.dj-input {
+		display: flex;
+		display: -webkit-flex;
+		align-items: center;
+		height: 1.2rem;
+		font-size: .32rem;
+		border-bottom: .02rem solid #e9edf4;
+	}
+
+	.dj-buton {
+		width: 100%;
+		height: .9rem;
+		line-height: .9rem;
+		border-radius: .34rem;
+		background-color: #c30302;
+		color: #FFF;
+		font-size: .32rem;
+		margin-top: .7rem;
+	}
+</style>
+
+<body>
+	<header>
+		<img src="../../image/wjdj.png" alt="">
+	</header>
+	<div class="dj-from">
+		<div class="dj-input">
+			<input id="tel" placeholder="请输入您的账号" type="tel">
+		</div>
+		<div class="dj-input">
+			<input id="password" placeholder="请输入您的密码" type="password">
+		</div>
+		<button class="dj-buton">登陆</button>
+	</div>
+</body>
+
+<script type="text/javascript" src="../../script/jquery-1.10.1.min.js"></script>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/public.js"></script>
+<script type="text/javascript">
+	apiready = function() {
+		console.log(JSON.stringify($api.getStorage('userInfo')));
+		$('.dj-buton').click(function() {
+
+			var tel = $('#tel').val();
+			var password = $('#password').val();
+			var url = HOST + 'PartyBuilding/login/';
+
+			api.showProgress({
+				modal: true
+			});//显示loadding
+			api.ajax({
+				url: url,
+				method: 'post',
+				data: {
+					values: {
+						tel: tel,
+						password: password
+					}
+				}
+			}, function(ret, err) {
+				api.hideProgress();//隐藏loadding
+				if (ret.result) {
+					alert(ret.msg);
+					$api.setStorage('userInfo', ret.userInfo);//apicloud中本地存储可以直接存储对象
+					//发送广播让所有页面都收到这条信息
+					api.sendEvent({
+					    name: 'login'
+					});
+					api.closeWin();//关闭当前页面
+				} else {
+					alert(ret.msg);
+				}
+			});
+
+		})
+	}
+</script>
+
+</html>

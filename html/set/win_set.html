@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+	<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+	<title>设置</title>
+	<link rel="stylesheet" type="text/css" href="../../css/api.css" />
+	<script src="../../script/jquery-1.10.1.min.js" charset="utf-8"></script>
+</head>
+<style type="text/css">
+	* {
+		margin: 0;
+		padding: 0;
+		font-family: "SF Pro Display", "SF Pro Icons", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+	}
+
+	body {
+		background-color: #eff3f5;
+	}
+
+	.header {
+		position: relative;
+		display: flex;
+		display: -webkit-flex;
+		height: 55px;
+		line-height: 55px;
+		width: 100%;
+		background-color: #FFF;
+		border-bottom: 1px solid #f6f6f6;
+		align-items: center;
+	}
+	.back {
+		height: 18px;
+		width: 18px;
+		margin: 17px 14px;
+	}
+
+		.header-title {
+			color: #323237;
+			position: relative;
+			font-size: 18px;
+			font-weight: 500;
+		}
+</style>
+
+<body>
+	<header class="header" id="header">
+		<img class="back" src="../../image/ic_arrow_left.png" onclick="api.closeWin();" />
+		<div class="header-title">设置</div>
+	</header>
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<!-- <script type="text/javascript" src="../../script/public.js"></script> -->
+<script type="text/javascript">
+	apiready = function() {
+		$api.fixStatusBar($api.dom('header'));
+		var header = $api.byId('header');
+		var headerH = $api.offset(header).h;
+		var new_id = api.pageParam.new_id;
+		console.log(new_id);
+		api.openFrame({
+			name: 'frame_set',
+			url: './frame_set.html',
+			rect: {
+				x: 0,
+				y: headerH,
+				w: 'auto',
+				h: 'auto'
+			},
+			pageParam: {
+					new_id: new_id
+			},
+			progress: { //设置进度条类型和样式
+				type: 'page', //取值范围为default|page
+				title: '加载框', //type为default时显示的加载框标题
+				text: '努力加载中' //type为default时显示的加载框内容
+			}
+		});
+	}
+</script>
+
+</html>

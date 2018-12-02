@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<title>个人信息</title>
+	<meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0, maximum-scale=1.0">
+	<link rel="stylesheet" type="text/css" href="../../css/reset.css" />
+	<link rel="stylesheet" type="text/css" href="http://at.alicdn.com/t/font_580261_ese8e77wgu.css" />
+	<style type="text/css">
+		body {
+			background-color: #FFFFFF;
+		}
+
+		.bg-color {
+			background-color: #FFFFFF;
+		}
+
+		.block {
+			padding: 0 .55rem;
+		}
+
+		.title {
+			font-size: .44rem;
+			font-weight: 700;
+			color: #171717;
+			line-height: 1.3;
+			padding: .3rem 0 .2rem;
+		}
+
+		.subtitle {
+			font-size: .32rem;
+			color: #000000;
+			line-height: 1.5;
+		}
+
+		.tips {
+			padding: .3rem 0;
+			font-size: .3rem;
+			color: #717171;
+		}
+
+		.image {
+			width: 100%;
+			height: auto;
+		}
+
+		.content {
+			font-size: .34rem;
+			color: #202020;
+			line-height: 1.5;
+			text-indent: 2em;
+			margin: .4rem 0;
+		}
+
+		.layout {
+			background-color: #FFFFFF;
+			padding: .35rem .2rem;
+			display: flex;
+		}
+
+		.share {
+			flex: 1;
+			text-align: center;
+		}
+
+		.share:last-child {
+			border-left: 1px solid #e4e3e3;
+		}
+
+		.icon-weibo,
+		.icon-weixin1,
+		.icon-pengyouquan,
+		.icon-zan {
+			font-size: .8rem;
+		}
+
+		.icon-weibo {
+			color: #f36a72;
+		}
+
+		.icon-weixin1 {
+			color: #46dc5f;
+		}
+
+		.icon-pengyouquan {
+			color: #46dc5f;
+		}
+
+		.icon-zan {
+			color: #e0e0e0;
+		}
+
+		.giveLike {
+			color: #c30302;
+		}
+
+		.shareName {
+			font-size: .3rem;
+			color: #191919;
+			margin-top: .15rem;
+		}
+
+		.recommend-list {
+			margin: .3rem 0;
+		}
+
+		.recommend-title {
+			height: .7rem;
+			line-height: .7rem;
+			position: relative;
+			padding-left: .75rem;
+			font-size: .32rem;
+			font-weight: 700;
+			color: #c30302;
+		}
+
+		.recommend-title:after {
+			position: absolute;
+			top: .18rem;
+			left: .55rem;
+			content: '';
+			width: .04rem;
+			height: .36rem;
+			background-color: #c30302;
+		}
+
+		.recommend-item {
+			height: .85rem;
+			line-height: .85rem;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			display: -webkit-box;
+			-webkit-box-orient: vertical;
+			-webkit-line-clamp: 1;
+			font-size: .32rem;
+			color: #131313;
+			border-bottom: 1px dashed #cfcfcf;
+		}
+
+		.recommend-item:last-child {
+			border-bottom: 1px solid #e1e1e1;
+		}
+
+		.comments {
+			margin-bottom: 1.2rem;
+		}
+
+		.comments-title {
+			height: .7rem;
+			line-height: .7rem;
+			position: relative;
+			padding-left: .2rem;
+			font-size: .32rem;
+			font-weight: 700;
+			color: #c30302;
+		}
+
+		.comments-title:after {
+			position: absolute;
+			top: .18rem;
+			left: 0;
+			content: '';
+			width: .04rem;
+			height: .36rem;
+			background-color: #c30302;
+		}
+
+		.have {
+			padding: .4rem 0;
+			display: flex;
+			/*border-bottom: 1px solid #d4d4d4;*/
+		}
+
+		.publish {
+			flex: 1;
+			margin-left: .25rem;
+			/*margin-top: .1rem;*/
+		}
+
+		.portrait {
+			width: .5rem;
+			height: .5rem;
+			background-repeat: no-repeat;
+			background-position: center;
+			background-size: cover;
+			border-radius: 50%;
+		}
+
+		.publish-name {
+			font-size: .32rem;
+			color: #3a6a83;
+			line-height: 1.5;
+		}
+
+		.publish-time {
+			font-size: .28rem;
+			color: #707070;
+			line-height: 2;
+		}
+
+		.publish-con {
+			font-size: .32rem;
+			color: #191919;
+			line-height: 1.5;
+		}
+
+		.comments-img {
+			width: 3.45rem;
+			height: 1.65rem;
+			margin: .6rem auto 0;
+		}
+
+		.comments-img img {
+			width: 100%;
+			height: 100%;
+		}
+
+		.comments-text {
+			height: 1.1rem;
+			line-height: 1.1rem;
+			text-align: center;
+			font-size: .32rem;
+			color: #585858;
+		}
+
+		.footer {
+			background-color: #FFFFFF;
+			height: 1.1rem;
+			position: fixed;
+			bottom: 0;
+			width: 100%;
+		}
+
+		.footer-input {
+			width: 90%;
+			margin-left: 5%;
+			height: .7rem;
+			line-height: .7rem;
+			margin-top: .2rem;
+			background-color: #efefef;
+			border-radius: .25rem;
+			display: flex;
+		}
+
+		.icon-pinglun {
+			width: .65rem;
+			text-align: center;
+			font-size: .34rem;
+			color: #939393;
+		}
+
+		.input {
+			flex: 1;
+			height: .7rem;
+			line-height: .7rem;
+			background-color: #efefef;
+			font-size: .34rem;
+			border-radius: .25rem;
+		}
+
+		.block {
+			background-color: #FFF;
+		}
+
+		.block img {
+			max-width: 100% !important;
+		}
+		.bg_detail_loading{
+			position: absolute;
+			top: 0;
+			bottom: 0;
+			left:0;
+			right:0;
+			width: 100%;
+			height: 100%;
+			background-image: url('../../image/bg_detail_loading.png');
+			background-size: cover;
+			background-repeat: no-repeat;
+			background-position: center;
+			z-index: 1111;
+		}
+	</style>
+</head>
+
+<body>
+	<div class="bg_detail_loading">
+
+	</div>
+	<div class="bg-color block">
+		<div class="title"></div>
+		<!-- <div class="subtitle">强调携手打造新时代更加紧密的中非命运共同体 重点实施好产业促进、设施联通、贸易便利、绿色发展、能力建设、健康卫生、人文交流、和平安全“八大行动”</div> -->
+		<div class="tips">
+			<span class="day"></span>
+			<!-- <span class="source">人民网-人民日报</span> -->
+		</div>
+	</div>
+	<div class="block" id="info">
+
+	</div>
+	<div class="layout">
+		<div class="share" onclick="share()">
+			<div class="iconfont icon-weibo"></div>
+			<div class="shareName">新浪微博</div>
+		</div>
+		<div class="share" onclick="share()">
+			<div class="iconfont icon-weixin1"></div>
+			<div class="shareName">微信</div>
+		</div>
+		<div class="share" onclick="share()">
+			<div class="iconfont icon-pengyouquan"></div>
+			<div class="shareName">朋友圈</div>
+		</div>
+		<div class="share" onclick="add_praise()">
+			<div class="iconfont icon-zan"></div>
+			<!--点赞class==giveLike-->
+			<div class="shareName shareNum">5</div>
+		</div>
+	</div>
+	<!-- <div class="bg-color recommend-list">
+		<div class="recommend-title">推荐阅读</div>
+		<div class="block recommend-item">中非合作论坛北京峰会隆重开幕 习近平出席开幕式并发表主旨讲话</div>
+		<div class="block recommend-item">绘就新时代中非合作蓝图 ——习近平主席在中非合作论坛北京峰会上的主旨讲话引起热烈反响</div>
+		<div class="block recommend-item">习近平出席中非合作论坛约翰内斯堡峰会开幕式并发表致辞</div>
+		<div class="block recommend-item">习近平分别会见出席中非合作论坛北京峰会的部分非洲国家领导人</div>
+		<div class="block recommend-item">习近平分别会见出席中非合作论坛北京峰会的部分非洲国家领导人</div>
+	</div> -->
+	<div class="block comments">
+		<div class="comments-title">热门评论</div>
+		<div id="comment-list"></div>
+		<!-- <div class="have">
+			<div class="portrait" style="background-image: url(https://img01.sogoucdn.com/net/a/04/link?url=https%3A%2F%2Fi04picsos.sogoucdn.com%2F02ce689d3f8216ee&appid=122);"></div>
+			<div class="publish">
+				<div class="publish-name">用户</div>
+				<div class="publish-time">1分钟前</div>
+				<div class="publish-con">习近平分别会见出席中非合作论坛北京峰会的部分非洲国家领导人习近平分别会见出席中非合作论坛北京峰会的部分非洲国家领导人习近平分别会见出席中非合作论坛北京峰会的部分非洲国家领导人习近平分别会见出席中非合作论坛北京峰会的部分非洲国家领导人</div>
+			</div>
+		</div> -->
+		<div class="not" id="notHavecomment" style="display: none;">
+			<div class="comments-img">
+				<img src="../../image/ic_no_news.png" />
+			</div>
+			<div class="comments-text">都看到这里了，说两句吧！</div>
+		</div>
+	</div>
+	<div class="footer">
+		<div class="footer-input">
+			<div class="iconfont icon-pinglun"></div>
+			<input class="input" placeholder="我要说两句" id="comment" placeholder="我要说两句" onkeydown="submit()" />
+		</div>
+	</div>
+	<script type="text/javascript" src="../../script/public.js"></script>
+	<script type="text/javascript" src="../../script/jquery-1.10.1.min.js"></script>
+	<script type="text/javascript" src="../../script/api.js"></script>
+	<script type="text/javascript">
+		function submit() {
+			if (event.keyCode == 13) {
+				var comment = $('#comment').val();
+				var url = HOST + 'Comment/add_comment/';
+				var new_id = api.pageParam.new_id;
+				var userInfo = $api.getStorage('userInfo');
+				var uid = '';
+				if (userInfo) {
+					uid = userInfo.id;
+				} else {
+					api.toast({
+						msg: '请登录后再操作'
+					});
+					api.openWin({
+						name: 'win_login',
+						url: '../login/win_login.html'
+					});
+					return false;
+				}
+				api.ajax({
+					url: url,
+					method: 'post',
+					data: {
+						values: {
+							new_id: new_id,
+							uid: uid,
+							comment: comment
+						}
+					}
+				}, function(ret) {
+
+				});
+
+			}
+		}
+		apiready = function() {
+			var new_id = api.pageParam.new_id;
+			get_new_detail_by_id(new_id);
+			//http://1o90f54084.iok.la/dangjiancms/index.php?s=/addon/PartyBuilding/News/get_new_detail_by_id/new_id/1/uid/1
+			function get_new_detail_by_id(new_id) {
+				var url = HOST + 'News/get_new_detail_by_id/';
+				var userInfo = $api.getStorage('userInfo');
+				var uid = '';
+				if (userInfo) {
+					uid = userInfo.id;
+				} else {
+					api.toast({
+						msg: '请登录后再操作'
+					});
+					api.openWin({
+						name: 'win_login',
+						url: '../login/win_login.html'
+					});
+					return false;
+				}
+				api.ajax({
+					url: url,
+					method: 'post',
+					data: {
+						values: {
+							new_id: new_id,
+							uid: uid
+						}
+					}
+				}, function(ret) {
+					if (ret.result) {
+						var title = ret.info.title;
+						var info = ret.info.info;
+						var ctime = ret.info.ctime;
+						var praise = ret.info.praise;
+						var party_type = ret.party_type;
+						var commentList = ret.commentList;
+						addCommentList(commentList);
+						$('.title').text(title);
+						$('#info').html(info);
+						$('.shareNum').text(praise);
+						$('.day').text(ctime);
+						if (party_type) {
+							$('.icon-zan').addClass('giveLike');
+						} else {
+							$('.icon-zan').removeClass('giveLike');
+						}
+						$('.bg_detail_loading').hide();
+					}
+					// console.log(JSON.stringify(ret));
+				});
+
+			}
+		};
+		function addCommentList(commentList){
+			if (commentList == null){
+				$('#notHavecomment').show();
+				$('#comment-list').hide();
+				return false;
+			}
+			var html = '';
+			for (var i = 0; i < commentList.length; i++) {
+				html+= '<div class="have">';
+				html+= '<div class="portrait" style="background-image: url('+ commentList[i].userinfo.img +');"></div>';
+				html+= '<div class="publish">';
+				html+= '<div class="publish-name">'+ commentList[i].userinfo.nickname +'</div>';
+				html+= '<div class="publish-time">'+commentList[i].comment_time+'</div>';
+				html+= '<div class="publish-con">'+commentList[i].comment_text+'</div>';
+				html+= '</div>';
+				html+= '</div>';
+			}
+			$('#comment-list').html(html);
+			$('#notHavecomment').hide();
+			$('#comment-list').show();
+		}
+		function add_praise() {
+			var url = HOST + 'PartyBuilding/add_praise/';
+			var new_id = api.pageParam.new_id;
+			var userInfo = $api.getStorage('userInfo');
+			var uid = '';
+			if (userInfo) {
+				uid = userInfo.id;
+			} else {
+				api.toast({
+					msg: '请登录后再操作'
+				});
+				api.openWin({
+					name: 'win_login',
+					url: '../login/win_login.html'
+				});
+				return false;
+			}
+			api.ajax({
+				url: url,
+				method: 'post',
+				data: {
+					values: {
+						new_id: new_id,
+						uid: uid
+					}
+				}
+			}, function(ret, err) {
+				if (ret) {
+					if (ret.type == 'add') {
+						$('.icon-zan').addClass('giveLike');
+						$('.shareNum').text(ret.num);
+					} else {
+						if (ret.num < parseInt($('.shareNum').text())) {
+							$('.icon-zan').removeClass('giveLike');
+						}
+						$('.shareNum').text(ret.num);
+					}
+				}
+			});
+		};
+		function share (){
+			var sharedModule = api.require('shareAction');
+			sharedModule.share({
+			    text: '分享功能',
+			    type: 'text'
+			});
+		}
+	</script>
+</body>
